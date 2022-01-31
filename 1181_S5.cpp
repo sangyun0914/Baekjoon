@@ -24,12 +24,27 @@ int main()
     int num;
     std::cin >> num;
     std::cin.ignore();
-    int size[num];
     std::string array[num];
+    getline(std::cin, array[0]);
 
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < num - 1; i++)
     {
-        getline(std::cin, array[i]);
-        size[i] = array[i].length();
+        std::string input;
+        getline(std::cin, input);
+        for (int j = i; j <= i; j++)
+        {
+            if (input.length() < array[j].length())
+            {
+                std::string temp = array[j];
+                array[j] = input;
+                array[j + 1] = temp;
+            }
+            else
+                continue;
+        }
     }
+    std::cout << "\n";
+
+    for (auto x : array)
+        std::cout << x << "\n";
 }
