@@ -21,30 +21,77 @@
 
 int main()
 {
-    int num;
+    int num, place, dupCount = 0;
     std::cin >> num;
     std::cin.ignore();
     std::string array[num];
     getline(std::cin, array[0]);
+    std::string input;
 
-    for (int i = 0; i < num - 1; i++)
+    for (int i = 1; i < num; i++) // Iterate through all words
     {
-        std::string input;
         getline(std::cin, input);
-        for (int j = i; j <= i; j++)
+        if (input.length() == array[0].length())
         {
-            if (input.length() < array[j].length())
-            {
-                std::string temp = array[j];
-                array[j] = input;
-                array[j + 1] = temp;
-            }
-            else
-                continue;
+            if (input < array[0])
+                place = 0;
         }
-    }
-    std::cout << "\n";
+        else if (input.length() == array[i - dupCount - 1].length())
+        {
+            if (input > array[i - dupCount - 1])
+                place = i - dupCount;
+        }
 
-    for (auto x : array)
-        std::cout << x << "\n";
+        if (input.length() < array[0].length()) // If among shortest
+            place = 0;
+        else if (input.length() > array[i - dupCount - 1].length()) // If among longest
+            place = i - dupCount;
+        else // In between
+        {
+            for (int j = 0; j < i - dupCount; j++)
+            {
+                if (input.length() > array[j].length() && input.length() < array[j + 1].length())
+                {
+                    place = j + 1;
+                    break;
+                }
+                else if (input.length() == array[j].length())
+                {
+                    if (input < array[j])
+                    {
+                        place = j;
+                        break;
+                    }
+                    if (input > array[j] && input.length() < array[j + 1].length())
+                    {
+                        place = j + 1;
+                        break;
+                    }
+                    if (input.length() == array[j + 1].length())
+                    {
+                        if (input > array[j] && input < array[j + 1])
+                        {
+                            place = j + 1;
+                            break;
+                        }
+                    }
+                    if (input == array[j])
+                    {
+                        place = j;
+                        dupCount++;
+                        break;
+                    }
+                }
+            }
+        }
+        if (input == array[place])
+            continue;
+
+        for (int j = i - dupCount; j > place; j--)
+            array[j] = array[j - 1];
+        array[place] = input;
+    }
+
+    for (int i = 0; i < num - dupCount; i++)
+        std::cout << array[i] << "\n";
 }
