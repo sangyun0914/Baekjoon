@@ -17,11 +17,49 @@
  *  https://www.acmicpc.net/problem/1181
 **/
 
+#if 1
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool compareWith(string a, string b){
+  if(a.length() == b.length())
+    return a<b;
+  return a.length()<b.length();
+}
+
+int main(){
+  int N;
+  vector<string> vec;  
+  cin>>N;
+  for(int i=0; i<N; i++){
+    string str;
+    cin>>str;
+    if(find(vec.begin(), vec.end(), str) == vec.end())
+      vec.push_back(str);
+  }
+  sort(vec.begin(), vec.end(), compareWith);
+
+  for(int i=0; i<vec.size(); i++){
+    cout<<vec[i]<<'\n';
+  }
+}
+
+#endif
+
+
+#if 0 // Timeout
+
 #include <iostream>
 
 int main()
 {
     int num, place, dupCount = 0;
+    std::cin.tie(NULL);
+    std::ios_base::sync_with_stdio(false);
     std::cin >> num;
     std::cin.ignore();
     std::string array[num];
@@ -95,3 +133,5 @@ int main()
     for (int i = 0; i < num - dupCount; i++)
         std::cout << array[i] << "\n";
 }
+
+#endif
