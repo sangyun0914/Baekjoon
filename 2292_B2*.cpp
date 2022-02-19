@@ -13,8 +13,6 @@
 출력
     입력으로 주어진 방까지 최소 개수의 방을 지나서 갈 때 몇 개의 방을 지나는지 출력한다.
 
-
-
  *  https://www.acmicpc.net/problem/2292
 **/
 
@@ -44,7 +42,7 @@ int main()
 
 #endif
 
-#if 0 // better code
+#if 0 // Better code
 
 #include <iostream>
 using namespace std;

@@ -17,7 +17,7 @@
  *  https://www.acmicpc.net/problem/1181
 **/
 
-#if 1
+#if 0 // Vector
 
 #include <iostream>
 #include <vector>
@@ -25,31 +25,185 @@
 
 using namespace std;
 
-bool compareWith(string a, string b){
-  if(a.length() == b.length())
-    return a<b;
-  return a.length()<b.length();
+bool compareWith(string a, string b)
+{
+    if (a.length() == b.length())
+        return a < b;
+    return a.length() < b.length();
 }
 
-int main(){
-  int N;
-  vector<string> vec;  
-  cin>>N;
-  for(int i=0; i<N; i++){
-    string str;
-    cin>>str;
-    if(find(vec.begin(), vec.end(), str) == vec.end())
-      vec.push_back(str);
-  }
-  sort(vec.begin(), vec.end(), compareWith);
+int main()
+{
+    int N;
+    vector<string> vec;
+    cin >> N;
+    for (int i = 0; i < N; i++)
+    {
+        string str;
+        cin >> str;
+        if (find(vec.begin(), vec.end(), str) == vec.end())
+            vec.push_back(str);
+    }
+    sort(vec.begin(), vec.end(), compareWith);
 
-  for(int i=0; i<vec.size(); i++){
-    cout<<vec[i]<<'\n';
-  }
+    for (int i = 0; i < vec.size(); i++)
+        cout << vec[i] << '\n';
 }
 
 #endif
 
+#if 1 // Merge Sort
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct
+{
+    char string[51];
+    int length;
+} str;
+
+str sorted[20001];
+str arr[20001];
+
+void merge(str arr[], int start, int mid, int last)
+{
+    int i, j, k;
+    i = start;
+    j = mid + 1;
+    k = start;
+    while (i <= mid && j <= last)
+    {
+        if (arr[i].length < arr[j].length)
+            sorted[k++] = arr[i++];
+        else if (arr[i].length > arr[j].length)
+            sorted[k++] = arr[j++];
+        else
+        {
+            if (strcmp(arr[i].string, arr[j].string) > 0)
+                sorted[k++] = arr[j++];
+
+            else
+                sorted[k++] = arr[i++];
+        }
+    }
+    if (i <= mid)
+    {
+        while (i <= mid)
+            sorted[k++] = arr[i++];
+    }
+    else
+    {
+        while (j <= last)
+            sorted[k++] = arr[j++];
+    }
+    for (i = start; i <= last; i++)
+        arr[i] = sorted[i];
+}
+
+void merge_sort(str arr[], int start, int last)
+{
+    int mid;
+    if (start < last)
+    {
+        mid = (start + last) / 2;
+        merge_sort(arr, start, mid);
+        merge_sort(arr, mid + 1, last);
+        merge(arr, start, mid, last);
+    }
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%s", arr[i].string);
+        arr[i].length = strlen(arr[i].string);
+    }
+
+    merge_sort(arr, 0, n - 1);
+
+    for (int i = 0; i < n; i++)
+    {
+        if (strcmp(arr[i].string, arr[i + 1].string) != 0)
+            printf("%s\n", arr[i].string);
+    }
+
+    return 0;
+}
+
+#endif
+
+#if 0 // QuickSort
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct
+{
+    int len;
+    char str[51];
+} Word;
+
+int compare(const void *first, const void *second)
+{
+    Word *a = (Word *)first;
+    Word *b = (Word *)second;
+
+    if (a->len < b->len)
+        return -1;
+    else if (a->len > b->len)
+        return 1;
+    else if (a->len == b->len)
+    {
+        if (strcmp(a->str, b->str) < 0)
+            return -1;
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int main()
+{
+    int i, j, n;
+    Word *text;
+
+    scanf("%d", &n);
+
+    text = (Word *)calloc(n + 1, sizeof(Word));
+
+    for (i = 0; i < n; i++)
+    {
+        scanf(" %s", text[i].str);
+        text[i].len = strlen(text[i].str);
+
+        /*중복 제거*/
+        for (j = 0; j < i; j++)
+        {
+            if (strcmp(text[i].str, text[j].str) == 0)
+            {
+                i -= 1;
+                n -= 1;
+                break;
+            }
+        }
+    }
+
+    qsort(text, n, sizeof(text[0]), compare);
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%s\n", text[i].str);
+    }
+
+    return 0;
+}
+
+#endif
 
 #if 0 // Timeout
 
