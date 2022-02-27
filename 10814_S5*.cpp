@@ -58,7 +58,7 @@ int main()
     return 0;
 }
 
-#if 0 // Merge Sort
+#if 1 // Merge Sort
 
 #include <stdio.h>
 
